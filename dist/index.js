@@ -57,7 +57,7 @@ function run() {
         try {
             core.info('Hell world');
             core.info(JIRA_ISSUE_API_URL);
-            if (!BRANCH_NAME) {
+            if (BRANCH_NAME) {
                 core.info(BRANCH_NAME);
                 fetch_issue('TO-169');
             }
