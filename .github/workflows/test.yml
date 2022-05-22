@@ -2,7 +2,7 @@ name: 'build-test'
 on:
   push:
     branches:
-      - main
+      - '*'
 
 jobs:
   build:
@@ -21,3 +21,5 @@ jobs:
         id: pull_request_author
         with:
           JIRA_ISSUE_API_URL: ${{secrets.JIRA_ISSUE_API_URL}}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          BRANCH_NAME: feat/TO-169-branch-name
