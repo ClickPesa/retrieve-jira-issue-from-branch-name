@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        id: pull_request_author
+        id: retrieve_jira_issue
         with:
           JIRA_ISSUE_API_URL: ${{secrets.JIRA_ISSUE_API_URL}}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
