@@ -30,7 +30,7 @@ const fetch_issue = (issue: any) => {
   axios
     .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
       headers: {
-        Authorization: `Bearer ${JIRA_AUTH_TOKEN}`
+        Authorization: `Basic ${JIRA_AUTH_TOKEN}`
       }
     })
     .then((res: any) => {
