@@ -43,6 +43,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
 const BRANCH_NAME = core.getInput('BRANCH_NAME');
+const FETCH_ON_MERGE_PR = core.getInput('FETCH_ON_MERGE_PR');
 const JIRA_ISSUE_API_URL = core.getInput('JIRA_ISSUE_API_URL');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
