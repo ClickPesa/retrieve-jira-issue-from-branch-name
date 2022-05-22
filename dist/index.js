@@ -75,7 +75,7 @@ function run() {
 const fetch_issue = (issue) => {
     core.info(`${JIRA_ISSUE_API_URL}/${issue}`);
     axios_1.default
-        .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
+        .get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
         headers: {
             Authorization: `Basic ${JIRA_AUTH_TOKEN}`
         }
