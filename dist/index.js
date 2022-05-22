@@ -73,7 +73,7 @@ function run() {
     });
 }
 const fetch_issue = (issue) => {
-    core.info(`${JIRA_ISSUE_API_URL}/${issue}`);
+    core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`);
     axios_1.default
         .get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
         headers: {

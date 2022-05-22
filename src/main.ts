@@ -26,7 +26,7 @@ async function run() {
 }
 
 const fetch_issue = (issue: any) => {
-  core.info(`${JIRA_ISSUE_API_URL}/${issue}`)
+  core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`)
   axios
     .get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
       headers: {
