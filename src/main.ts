@@ -26,10 +26,11 @@ async function run() {
 }
 
 const fetch_issue = (issue: any) => {
+  core.info(`${JIRA_ISSUE_API_URL}/${issue}`)
   axios
     .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
       headers: {
-        Authorization: `${JIRA_AUTH_TOKEN}`
+        Authorization: `Bearer ${JIRA_AUTH_TOKEN}`
       }
     })
     .then((res: any) => {

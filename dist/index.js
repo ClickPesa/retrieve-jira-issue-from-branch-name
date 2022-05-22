@@ -73,10 +73,11 @@ function run() {
     });
 }
 const fetch_issue = (issue) => {
+    core.info(`${JIRA_ISSUE_API_URL}/${issue}`);
     axios_1.default
         .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
         headers: {
-            Authorization: `${JIRA_AUTH_TOKEN}`
+            Authorization: `Bearer ${JIRA_AUTH_TOKEN}`
         }
     })
         .then((res) => {
