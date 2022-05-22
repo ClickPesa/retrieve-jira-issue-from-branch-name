@@ -25,8 +25,6 @@ async function run() {
   }
 }
 
-run()
-
 const fetch_issue = (issue: any) => {
   axios
     .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
@@ -41,3 +39,5 @@ const fetch_issue = (issue: any) => {
       core.info(err.message)
     })
 }
+
+run()

@@ -72,7 +72,6 @@ function run() {
         }
     });
 }
-run();
 const fetch_issue = (issue) => {
     axios_1.default
         .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
@@ -87,6 +86,7 @@ const fetch_issue = (issue) => {
         core.info(err.message);
     });
 };
+run();
 
 
 /***/ }),
