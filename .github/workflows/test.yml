@@ -23,4 +23,5 @@ jobs:
           JIRA_ISSUE_API_URL: ${{secrets.JIRA_ISSUE_API_URL}}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           BRANCH_NAME: feat/TO-169-branch-name
+          JIRA_AUTH_TOKEN: ${{ secrets.JIRA_AUTH }}
           FETCH_ON_MERGE_PR: false 

@@ -10,7 +10,10 @@ inputs:
     description: "branch name with jira issue key"
   GITHUB_TOKEN:
     required: true
-    description: "github action for authentication"
+    description: "github authentication token"
+  JIRA_AUTH_TOKEN:
+    required: true
+    description: "jira authentication token"
   FETCH_ON_MERGE_PR:
     required: false
     description: "fetch issue on merging pr to another branch"
