@@ -1,0 +1,13 @@
+name: 'Get pull request creator informations'
+description: ''
+author: 'Benedict'
+inputs:
+  JIRA_ISSUE_API_URL:
+    required: true
+    description: "jira api"
+  BRANCH_NAME:
+    required: true
+    description: "branch name with jira issue key"
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
