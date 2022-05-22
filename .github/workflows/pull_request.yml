@@ -1,7 +1,8 @@
 name: 'build-test'
 on:
   push:
-    branches: [develop]
+    branches: 
+      - '*'
 
 jobs:
   test: 

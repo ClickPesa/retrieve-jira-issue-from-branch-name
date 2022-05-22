@@ -1,8 +1,8 @@
 {
-  "name": "pr-creator-info",
+  "name": "retrieve-jira-issue",
   "version": "0.0.0",
   "private": true,
-  "description": "Getting pull request creator informations",
+  "description": "an action to retrieve jira issue from a branch name",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.8.2",
+    "@actions/github": "^5.0.3",
     "axios": "^0.27.2"
   },
   "devDependencies": {

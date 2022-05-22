@@ -2,7 +2,7 @@ name: 'build-test'
 on:
   push:
     branches:
-      - main
+      - '*'
 
 jobs:
   build:
@@ -18,6 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        id: pull_request_author
+        id: retrieve_jira_issue
         with:
           JIRA_ISSUE_API_URL: ${{secrets.JIRA_ISSUE_API_URL}}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          BRANCH_NAME: feat/TO-169-branch-name
+          FETCH_ON_MERGE_PR: false 

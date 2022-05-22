@@ -42,20 +42,17 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
+const BRANCH_NAME = core.getInput('BRANCH_NAME');
+const FETCH_ON_MERGE_PR = core.getInput('FETCH_ON_MERGE_PR');
+const JIRA_ISSUE_API_URL = core.getInput('JIRA_ISSUE_API_URL');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 function run() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const pullNumber = (_e = (_d = (_c = (_b = (_a = context.payload) === null || _a === void 0 ? void 0 : _a.head_commit) === null || _b === void 0 ? void 0 : _b.message) === null || _c === void 0 ? void 0 : _c.split(' ')) === null || _d === void 0 ? void 0 : _d.find((o) => o === null || o === void 0 ? void 0 : o.includes('#'))) === null || _e === void 0 ? void 0 : _e.split('#')[1];
-            const pullRequest = yield octokit.rest.pulls.get({
-                owner: (_h = (_g = (_f = context.payload) === null || _f === void 0 ? void 0 : _f.repository) === null || _g === void 0 ? void 0 : _g.owner) === null || _h === void 0 ? void 0 : _h.login,
-                repo: (_k = (_j = context.payload) === null || _j === void 0 ? void 0 : _j.repository) === null || _k === void 0 ? void 0 : _k.name,
-                pull_number: Number(pullNumber)
-            });
-            const author = (_l = pullRequest === null || pullRequest === void 0 ? void 0 : pullRequest.data) === null || _l === void 0 ? void 0 : _l.head.user.login;
-            core.setOutput('author', author);
+            core.info('Hell world');
+            // fetch branch name if not provided
+            // fetch jira issue
         }
         catch (error) {
             if (error instanceof Error)
