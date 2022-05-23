@@ -37,7 +37,7 @@ const retrieve_issue_keys = branch => {
 }
 
 const fetch_issue = async (keys: string[]) => {
-  let issues: any[] = []
+  let issues: any = []
   keys?.forEach(issue => {
     axios
       .get(`${JIRA_ISSUE_API_URL}${issue}`, {
@@ -48,12 +48,14 @@ const fetch_issue = async (keys: string[]) => {
       })
       .then((res: any) => {
         core.info('yay, output is there')
+        core.info(res.data)
         issues.push(res?.data)
       })
       .catch((err: any) => {
         core.info(err)
       })
   })
+  core.info(issues)
   core.info(JSON.stringify(issues))
 }
 
