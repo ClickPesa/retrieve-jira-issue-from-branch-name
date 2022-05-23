@@ -56,14 +56,15 @@ const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     // default
     let branch = BRANCH_NAME;
-    if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
-        // fetch on merge pr
-        branch = '';
-    }
-    else {
-        // fetch on push
-        branch = '';
-    }
+    if (!BRANCH_NAME)
+        if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+            // fetch on merge pr
+            branch = '';
+        }
+        else {
+            // fetch on push
+            branch = '';
+        }
     // run checks to update branch name
     try {
         core.info(branch);
