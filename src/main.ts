@@ -38,9 +38,9 @@ const retrieve_issue_keys = branch => {
 const fetch_issue = async (keys: string[]) => {
   let issues: any = []
   keys?.forEach((issue: any) => {
-    core.info(issue)
+    core.info(issue.toString())
     axios
-      .get(`${JIRA_ISSUE_API_URL}${issue}`, {
+      .get(`${JIRA_ISSUE_API_URL}${issue.toString()}`, {
         headers: {
           Authorization: `Basic ${JIRA_AUTH_TOKEN}`
         }

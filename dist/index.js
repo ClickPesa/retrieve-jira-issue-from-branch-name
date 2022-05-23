@@ -80,9 +80,9 @@ const retrieve_issue_keys = branch => {
 const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
     keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => {
-        core.info(issue);
+        core.info(issue.toString());
         axios_1.default
-            .get(`${JIRA_ISSUE_API_URL}${issue}`, {
+            .get(`${JIRA_ISSUE_API_URL}${issue.toString()}`, {
             headers: {
                 Authorization: `Basic ${JIRA_AUTH_TOKEN}`
             }
