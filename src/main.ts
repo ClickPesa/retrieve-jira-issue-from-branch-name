@@ -2,8 +2,6 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import axios from 'axios'
 import matchAll from 'match-all'
-// const axios = require('axios')
-// const matchAll = require('match-all')
 
 const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN')
 const BRANCH_NAME = core.getInput('BRANCH_NAME')
@@ -14,7 +12,15 @@ const octokit = github.getOctokit(GITHUB_TOKEN)
 const {context = {}}: any = github
 
 const run = async () => {
-  let branch = BRANCH_NAME
+  // default
+  let branch: string = BRANCH_NAME
+  if (!FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+    // fetch on merge pr
+    branch = ''
+  } else {
+    // fetch on push
+    branch = ''
+  }
   // run checks to update branch name
   try {
     fetch_issue(retrieve_issue_keys(branch))
@@ -40,11 +46,14 @@ const fetch_issue = async (keys: string[]) => {
   keys?.forEach(async (issue: any) => {
     core.info(keys[0])
     try {
-      const issue_info: any = await axios.get(`${JIRA_ISSUE_API_URL}${issue}`, {
-        headers: {
-          Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+      const issue_info: any = await axios.get(
+        `${JIRA_ISSUE_API_URL}/${issue}`,
+        {
+          headers: {
+            Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+          }
         }
-      })
+      )
       core.info(issue_info)
     } catch (err: any) {
       core.info(err.message)

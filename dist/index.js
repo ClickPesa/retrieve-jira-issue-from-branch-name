@@ -46,8 +46,6 @@ const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
 const match_all_1 = __importDefault(__nccwpck_require__(6816));
-// const axios = require('axios')
-// const matchAll = require('match-all')
 const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
 const BRANCH_NAME = core.getInput('BRANCH_NAME');
 const FETCH_ON_MERGE_PR = core.getInput('FETCH_ON_MERGE_PR');
@@ -56,7 +54,16 @@ const JIRA_AUTH_TOKEN = core.getInput('JIRA_AUTH_TOKEN');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    // default
     let branch = BRANCH_NAME;
+    if (!FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+        // fetch on merge pr
+        branch = '';
+    }
+    else {
+        // fetch on push
+        branch = '';
+    }
     // run checks to update branch name
     try {
         fetch_issue(retrieve_issue_keys(branch));
@@ -82,7 +89,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
         core.info(keys[0]);
         try {
-            const issue_info = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}${issue}`, {
+            const issue_info = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
