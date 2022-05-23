@@ -89,12 +89,12 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
         core.info(keys[0]);
         try {
-            const issue_info = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
+            const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
             });
-            core.info(issue_info);
+            core.info(data);
         }
         catch (err) {
             core.info(err.message);
