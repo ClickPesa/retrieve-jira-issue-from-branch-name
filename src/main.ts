@@ -45,8 +45,8 @@ const fetch_issue = async (keys: string[]) => {
         Authorization: `Basic ${JIRA_AUTH_TOKEN}`
       }
     })
-    core.info(JSON.stringify(issue_info))
     core.info(issue_info)
+    core.info(JSON.stringify(issue_info))
   } catch (err: any) {
     core.info(err.message)
   }
