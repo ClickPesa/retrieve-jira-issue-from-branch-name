@@ -56,21 +56,15 @@ const JIRA_AUTH_TOKEN = core.getInput('JIRA_AUTH_TOKEN');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    let branch = BRANCH_NAME;
+    // run checks to update branch name
     try {
-        // core.info('Hell world')
-        // core.info(JIRA_ISSUE_API_URL)
-        if (BRANCH_NAME) {
-            // core.info(BRANCH_NAME)
-            fetch_issue(retrieve_issue_keys(BRANCH_NAME));
-        }
-        else if (!BRANCH_NAME && FETCH_ON_MERGE_PR) {
-        }
-        else {
-        }
+        core.info(branch);
+        fetch_issue(retrieve_issue_keys(branch));
     }
     catch (error) {
-        console.log(error.message);
-        // if (error instanceof Error) core.setFailed(error.message)
+        if (error instanceof Error)
+            core.setFailed(error.message);
     }
 });
 const retrieve_issue_keys = branch => {
@@ -88,18 +82,17 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
     keys === null || keys === void 0 ? void 0 : keys.forEach(issue => {
         axios_1.default
-            .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
+            .get(`${JIRA_ISSUE_API_URL}`, {
             headers: {
-                Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+                Authorization: `Basic ${JIRA_AUTH_TOKEN}`,
+                'Content-Type': 'application/json'
             }
         })
             .then(res => {
             core.info(res.data);
-            // console.log(res.data)
             // issues.push(res?.data)
         })
             .catch(err => {
-            // console.log(err.code)
             core.info(err.message);
         });
     });
