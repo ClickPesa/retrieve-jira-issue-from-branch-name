@@ -40,7 +40,7 @@ const fetch_issue = async (keys: string[]) => {
   let issues: any[] = []
   keys?.forEach(issue => {
     axios
-      .get(`${JIRA_ISSUE_API_URL}`, {
+      .get(`${JIRA_ISSUE_API_URL}${issue}`, {
         headers: {
           Authorization: `Basic ${JIRA_AUTH_TOKEN}`,
           'Content-Type': 'application/json'

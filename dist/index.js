@@ -82,7 +82,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
     keys === null || keys === void 0 ? void 0 : keys.forEach(issue => {
         axios_1.default
-            .get(`${JIRA_ISSUE_API_URL}`, {
+            .get(`${JIRA_ISSUE_API_URL}${issue}`, {
             headers: {
                 Authorization: `Basic ${JIRA_AUTH_TOKEN}`,
                 'Content-Type': 'application/json'
