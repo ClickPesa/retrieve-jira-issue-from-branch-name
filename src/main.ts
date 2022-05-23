@@ -14,7 +14,7 @@ const {context = {}}: any = github
 const run = async () => {
   // default
   let branch: string = BRANCH_NAME
-  if (!FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+  if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
     // fetch on merge pr
     branch = ''
   } else {
@@ -23,6 +23,7 @@ const run = async () => {
   }
   // run checks to update branch name
   try {
+    core.info(branch)
     fetch_issue(retrieve_issue_keys(branch))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
@@ -45,7 +46,7 @@ const fetch_issue = async (keys: string[]) => {
   let issues: any = []
   core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`)
   keys?.forEach(async (issue: any) => {
-    core.info(keys[0])
+    core.info(issue)
     core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`)
     try {
       const data: any = await axios.get(

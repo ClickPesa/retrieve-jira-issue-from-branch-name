@@ -56,7 +56,7 @@ const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     // default
     let branch = BRANCH_NAME;
-    if (!FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+    if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
         // fetch on merge pr
         branch = '';
     }
@@ -66,6 +66,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     // run checks to update branch name
     try {
+        core.info(branch);
         fetch_issue(retrieve_issue_keys(branch));
     }
     catch (error) {
@@ -88,7 +89,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
     core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`);
     keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
-        core.info(keys[0]);
+        core.info(issue);
         core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`);
         try {
             const data = yield axios_1.default.get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
