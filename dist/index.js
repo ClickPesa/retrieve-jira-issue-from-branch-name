@@ -87,12 +87,9 @@ const retrieve_issue_keys = branch => {
 };
 const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
-    core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`);
     keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
-        core.info(issue);
-        core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`);
         try {
-            const { data } = yield axios_1.default.get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
+            const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
