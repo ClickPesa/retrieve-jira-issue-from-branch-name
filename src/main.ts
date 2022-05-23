@@ -47,7 +47,6 @@ const fetch_issue = async (keys: string[]) => {
         }
       })
       .then((res: any) => {
-        core.info('yay, output is there')
         core.info(res.data)
         issues.push(res?.data)
       })
@@ -55,8 +54,8 @@ const fetch_issue = async (keys: string[]) => {
         core.info(err)
       })
   })
-  core.info(issues)
-  core.info(JSON.stringify(issues))
+  // core.info(issues)
+  // core.info(JSON.stringify(issues))
 }
 
 run()
