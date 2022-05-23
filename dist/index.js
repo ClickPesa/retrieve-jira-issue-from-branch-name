@@ -89,7 +89,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
             }
         })
             .then((res) => {
-            core.info(res);
+            core.info(res === null || res === void 0 ? void 0 : res.key);
             issues.push(res === null || res === void 0 ? void 0 : res.data);
         })
             .catch((err) => {
@@ -100,6 +100,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     // core.info(JSON.stringify(issues))
 });
 run();
+// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'
 
 
 /***/ }),

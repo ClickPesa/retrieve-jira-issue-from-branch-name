@@ -47,7 +47,7 @@ const fetch_issue = async (keys: string[]) => {
         }
       })
       .then((res: any) => {
-        core.info(res)
+        core.info(res?.key)
         issues.push(res?.data)
       })
       .catch((err: any) => {
@@ -59,3 +59,5 @@ const fetch_issue = async (keys: string[]) => {
 }
 
 run()
+
+// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'
