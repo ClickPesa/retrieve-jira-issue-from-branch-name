@@ -45,6 +45,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
+const match_all_1 = __importDefault(__nccwpck_require__(6816));
+// const axios = require('axios')
+// const matchAll = require('match-all')
 const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
 const BRANCH_NAME = core.getInput('BRANCH_NAME');
 const FETCH_ON_MERGE_PR = core.getInput('FETCH_ON_MERGE_PR');
@@ -52,41 +55,56 @@ const JIRA_ISSUE_API_URL = core.getInput('JIRA_ISSUE_API_URL');
 const JIRA_AUTH_TOKEN = core.getInput('JIRA_AUTH_TOKEN');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            core.info('Hell world');
-            core.info(JIRA_ISSUE_API_URL);
-            if (BRANCH_NAME) {
-                core.info(BRANCH_NAME);
-                fetch_issue('TO-169');
-            }
-            else if (!BRANCH_NAME && FETCH_ON_MERGE_PR) {
-            }
-            else {
-            }
+const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // core.info('Hell world')
+        // core.info(JIRA_ISSUE_API_URL)
+        if (BRANCH_NAME) {
+            // core.info(BRANCH_NAME)
+            fetch_issue(retrieve_issue_keys(BRANCH_NAME));
         }
-        catch (error) {
-            if (error instanceof Error)
-                core.setFailed(error.message);
+        else if (!BRANCH_NAME && FETCH_ON_MERGE_PR) {
+        }
+        else {
+        }
+    }
+    catch (error) {
+        console.log(error.message);
+        // if (error instanceof Error) core.setFailed(error.message)
+    }
+});
+const retrieve_issue_keys = branch => {
+    const resultArr = [];
+    const regex = /((([a-zA-Z]+)|([0-9]+))+-\d+)/g;
+    const matches = (0, match_all_1.default)(branch, regex).toArray();
+    matches.forEach(match => {
+        if (!resultArr.find(el => el === match)) {
+            resultArr.push(match);
         }
     });
-}
-const fetch_issue = (issue) => {
-    core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`);
-    axios_1.default
-        .get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
-        headers: {
-            Authorization: `Basic ${JIRA_AUTH_TOKEN}`
-        }
-    })
-        .then((res) => {
-        core.info(res);
-    })
-        .catch((err) => {
-        core.info(err.message);
-    });
+    return resultArr.join(',').toUpperCase().split(',');
 };
+const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
+    let issues = [];
+    keys === null || keys === void 0 ? void 0 : keys.forEach(issue => {
+        axios_1.default
+            .get(`${JIRA_ISSUE_API_URL}/${issue}`, {
+            headers: {
+                Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+            }
+        })
+            .then(res => {
+            core.info(res.data);
+            // console.log(res.data)
+            // issues.push(res?.data)
+        })
+            .catch(err => {
+            // console.log(err.code)
+            core.info(err.message);
+        });
+    });
+    core.info(JSON.stringify(issues));
+});
 run();
 
 
@@ -10091,6 +10109,105 @@ function isPlainObject(o) {
 
 exports.isPlainObject = isPlainObject;
 
+
+/***/ }),
+
+/***/ 6816:
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * matchAll
+ * Get all the matches for a regular expression in a string.
+ *
+ * @name matchAll
+ * @function
+ * @param {String} s The input string.
+ * @param {RegExp} r The regular expression.
+ * @return {Object} An object containing the following fields:
+ *
+ *  - `input` (String): The input string.
+ *  - `regex` (RegExp): The regular expression.
+ *  - `next` (Function): Get the next match.
+ *  - `toArray` (Function): Get all the matches.
+ *  - `reset` (Function): Reset the index.
+ */
+module.exports = function matchAll(s, r) {
+    return {
+        input: s,
+        regex: r
+
+        /**
+         * next
+         * Get the next match in single group match.
+         *
+         * @name next
+         * @function
+         * @return {String|null} The matched snippet.
+         */
+        , next: function next() {
+            var c = this.nextRaw();
+            if (c) {
+                for (var i = 1; i < c.length; i++) {
+                    if (c[i]) {
+                        return c[i];
+                    }
+                }
+            }
+            return null;
+        }
+
+        /**
+         * nextRaw
+         * Get the next match in raw regex output. Usefull to get another group match.
+         *
+         * @name nextRaw
+         * @function
+         * @returns {Array|null} The matched snippet
+         */
+        ,
+        nextRaw: function nextRaw() {
+            var c = this.regex.exec(this.input);
+            return c;
+        }
+
+        /**
+         * toArray
+         * Get all the matches.
+         *
+         * @name toArray
+         * @function
+         * @return {Array} The matched snippets.
+         */
+        ,
+        toArray: function toArray() {
+            var res = [],
+                c = null;
+
+            while (c = this.next()) {
+                res.push(c);
+            }
+
+            return res;
+        }
+
+        /**
+         * reset
+         * Reset the index.
+         *
+         * @name reset
+         * @function
+         * @param {Number} i The new index (default: `0`).
+         * @return {Number} The new index.
+         */
+        ,
+        reset: function reset(i) {
+            return this.regex.lastIndex = i || 0;
+        }
+    };
+};
 
 /***/ }),
 
