@@ -37,22 +37,20 @@ const retrieve_issue_keys = branch => {
 
 const fetch_issue = async (keys: string[]) => {
   let issues: any = []
-  keys?.forEach((issue: any) => {
-    core.info(issue.toString())
-    axios
-      .get(`${JIRA_ISSUE_API_URL}${issue.toString()}`, {
-        headers: {
-          Authorization: `Basic ${JIRA_AUTH_TOKEN}`
-        }
-      })
-      .then((res: any) => {
-        core.info(res)
-        issues.push(res?.data)
-      })
-      .catch((err: any) => {
-        core.info(err)
-      })
-  })
+  // keys?.forEach(async (issue: any) => {
+  core.info(keys[0])
+  try {
+    const issue_info: any = await axios.get(`${JIRA_ISSUE_API_URL}${keys[0]}`, {
+      headers: {
+        Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+      }
+    })
+    core.info(JSON.stringify(issue_info))
+    core.info(issue_info)
+  } catch (err: any) {
+    core.info(err.message)
+  }
+  // })
   // core.info(issues)
   // core.info(JSON.stringify(issues))
 }

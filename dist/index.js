@@ -79,22 +79,21 @@ const retrieve_issue_keys = branch => {
 };
 const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
-    keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => {
-        core.info(issue.toString());
-        axios_1.default
-            .get(`${JIRA_ISSUE_API_URL}${issue.toString()}`, {
+    // keys?.forEach(async (issue: any) => {
+    core.info(keys[0]);
+    try {
+        const issue_info = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}${keys[0]}`, {
             headers: {
                 Authorization: `Basic ${JIRA_AUTH_TOKEN}`
             }
-        })
-            .then((res) => {
-            core.info(res);
-            issues.push(res === null || res === void 0 ? void 0 : res.data);
-        })
-            .catch((err) => {
-            core.info(err);
         });
-    });
+        core.info(JSON.stringify(issue_info));
+        core.info(issue_info);
+    }
+    catch (err) {
+        core.info(err.message);
+    }
+    // })
     // core.info(issues)
     // core.info(JSON.stringify(issues))
 });
