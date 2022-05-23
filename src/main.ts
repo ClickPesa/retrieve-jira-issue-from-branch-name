@@ -42,8 +42,7 @@ const fetch_issue = async (keys: string[]) => {
     axios
       .get(`${JIRA_ISSUE_API_URL}${issue}`, {
         headers: {
-          Authorization: `Basic ${JIRA_AUTH_TOKEN}`,
-          'Content-Type': 'application/json'
+          Authorization: `Basic ${JIRA_AUTH_TOKEN}`
         }
       })
       .then((res: any) => {

@@ -84,8 +84,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
         axios_1.default
             .get(`${JIRA_ISSUE_API_URL}${issue}`, {
             headers: {
-                Authorization: `Basic ${JIRA_AUTH_TOKEN}`,
-                'Content-Type': 'application/json'
+                Authorization: `Basic ${JIRA_AUTH_TOKEN}`
             }
         })
             .then((res) => {
