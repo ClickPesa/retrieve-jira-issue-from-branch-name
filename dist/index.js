@@ -94,7 +94,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
             // issues.push(res?.data)
         })
             .catch(err => {
-            core.info(err.message);
+            core.info(err === null || err === void 0 ? void 0 : err.errorMessages[0]);
         });
     });
     // core.info(JSON.stringify(issues))
