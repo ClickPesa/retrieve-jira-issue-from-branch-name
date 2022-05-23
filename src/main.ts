@@ -2,8 +2,6 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import axios from 'axios'
 import matchAll from 'match-all'
-// const axios = require('axios')
-// const matchAll = require('match-all')
 
 const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN')
 const BRANCH_NAME = core.getInput('BRANCH_NAME')
@@ -14,7 +12,16 @@ const octokit = github.getOctokit(GITHUB_TOKEN)
 const {context = {}}: any = github
 
 const run = async () => {
-  let branch = BRANCH_NAME
+  // default
+  let branch: string = BRANCH_NAME
+  if (!BRANCH_NAME)
+    if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+      // fetch on merge pr
+      branch = ''
+    } else {
+      // fetch on push
+      branch = ''
+    }
   // run checks to update branch name
   try {
     core.info(branch)
@@ -37,25 +44,29 @@ const retrieve_issue_keys = branch => {
 }
 
 const fetch_issue = async (keys: string[]) => {
-  let issues: any[] = []
-  keys?.forEach(issue => {
-    axios
-      .get(`${JIRA_ISSUE_API_URL}`, {
-        headers: {
-          Authorization: `Basic ${JIRA_AUTH_TOKEN}`,
-          'Content-Type': 'application/json'
+  let issues: any = []
+  core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`)
+  keys?.forEach(async (issue: any) => {
+    core.info(issue)
+    core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`)
+    try {
+      const data: any = await axios.get(
+        `https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`,
+        {
+          headers: {
+            Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+          }
         }
-      })
-      .then(res => {
-        core.info('yay, output is there')
-        core.info(JSON.stringify(res))
-        // issues.push(res?.data)
-      })
-      .catch(err => {
-        core.info(err.message)
-      })
+      )
+      core.info(data)
+    } catch (err: any) {
+      core.info(err.message)
+    }
   })
-  core.info(JSON.stringify(issues))
+  // core.info(issues)
+  // core.info(JSON.stringify(issues))
 }
 
 run()
+
+// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'

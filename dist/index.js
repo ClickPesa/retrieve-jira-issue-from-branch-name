@@ -46,8 +46,6 @@ const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
 const match_all_1 = __importDefault(__nccwpck_require__(6816));
-// const axios = require('axios')
-// const matchAll = require('match-all')
 const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
 const BRANCH_NAME = core.getInput('BRANCH_NAME');
 const FETCH_ON_MERGE_PR = core.getInput('FETCH_ON_MERGE_PR');
@@ -56,7 +54,17 @@ const JIRA_AUTH_TOKEN = core.getInput('JIRA_AUTH_TOKEN');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    // default
     let branch = BRANCH_NAME;
+    if (!BRANCH_NAME)
+        if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+            // fetch on merge pr
+            branch = '';
+        }
+        else {
+            // fetch on push
+            branch = '';
+        }
     // run checks to update branch name
     try {
         core.info(branch);
@@ -80,26 +88,27 @@ const retrieve_issue_keys = branch => {
 };
 const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
-    keys === null || keys === void 0 ? void 0 : keys.forEach(issue => {
-        axios_1.default
-            .get(`${JIRA_ISSUE_API_URL}`, {
-            headers: {
-                Authorization: `Basic ${JIRA_AUTH_TOKEN}`,
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(res => {
-            core.info('yay, output is there');
-            core.info(JSON.stringify(res));
-            // issues.push(res?.data)
-        })
-            .catch(err => {
+    core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`);
+    keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
+        core.info(issue);
+        core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`);
+        try {
+            const data = yield axios_1.default.get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
+                headers: {
+                    Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+                }
+            });
+            core.info(data);
+        }
+        catch (err) {
             core.info(err.message);
-        });
-    });
-    core.info(JSON.stringify(issues));
+        }
+    }));
+    // core.info(issues)
+    // core.info(JSON.stringify(issues))
 });
 run();
+// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'
 
 
 /***/ }),
