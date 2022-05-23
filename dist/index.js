@@ -89,7 +89,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
             }
         })
             .then((res) => {
-            core.info(res === null || res === void 0 ? void 0 : res.key);
+            core.info(res === null || res === void 0 ? void 0 : res.data[0]);
             issues.push(res === null || res === void 0 ? void 0 : res.data);
         })
             .catch((err) => {
