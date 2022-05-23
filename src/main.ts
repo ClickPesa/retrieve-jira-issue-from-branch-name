@@ -46,11 +46,14 @@ const fetch_issue = async (keys: string[]) => {
   keys?.forEach(async (issue: any) => {
     core.info(keys[0])
     try {
-      const data: any = await axios.get(`${JIRA_ISSUE_API_URL}${issue}`, {
-        headers: {
-          Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+      const data: any = await axios.get(
+        `https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`,
+        {
+          headers: {
+            Authorization: `Basic ${JIRA_AUTH_TOKEN}`
+          }
         }
-      })
+      )
       core.info(data)
     } catch (err: any) {
       core.info(err.message)
