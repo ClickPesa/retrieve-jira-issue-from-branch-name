@@ -88,13 +88,13 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                 'Content-Type': 'application/json'
             }
         })
-            .then(res => {
+            .then((res) => {
             core.info('yay, output is there');
             // core.info(JSON.stringify(res))
             // issues.push(res?.data)
         })
-            .catch(err => {
-            core.info(err === null || err === void 0 ? void 0 : err.errorMessages[0]);
+            .catch((err) => {
+            core.info(err === null || err === void 0 ? void 0 : err.errorMessages);
         });
     });
     // core.info(JSON.stringify(issues))

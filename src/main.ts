@@ -46,13 +46,13 @@ const fetch_issue = async (keys: string[]) => {
           'Content-Type': 'application/json'
         }
       })
-      .then(res => {
+      .then((res: any) => {
         core.info('yay, output is there')
         // core.info(JSON.stringify(res))
         // issues.push(res?.data)
       })
-      .catch(err => {
-        core.info(err?.errorMessages[0])
+      .catch((err: any) => {
+        core.info(err?.errorMessages)
       })
   })
   // core.info(JSON.stringify(issues))
