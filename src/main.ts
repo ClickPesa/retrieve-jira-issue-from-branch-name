@@ -43,8 +43,10 @@ const retrieve_issue_keys = branch => {
 
 const fetch_issue = async (keys: string[]) => {
   let issues: any = []
+  core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`)
   keys?.forEach(async (issue: any) => {
     core.info(keys[0])
+    core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`)
     try {
       const data: any = await axios.get(
         `https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`,
