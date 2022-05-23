@@ -17,7 +17,6 @@ const run = async () => {
   let branch = BRANCH_NAME
   // run checks to update branch name
   try {
-    core.info(branch)
     fetch_issue(retrieve_issue_keys(branch))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
@@ -38,7 +37,8 @@ const retrieve_issue_keys = branch => {
 
 const fetch_issue = async (keys: string[]) => {
   let issues: any = []
-  keys?.forEach(issue => {
+  keys?.forEach((issue: any) => {
+    core.info(issue)
     axios
       .get(`${JIRA_ISSUE_API_URL}${issue}`, {
         headers: {
