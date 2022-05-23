@@ -47,7 +47,7 @@ const fetch_issue = async (keys: string[]) => {
         }
       })
       .then(res => {
-        core.info(res.data)
+        core.info(JSON.stringify(res))
         // issues.push(res?.data)
       })
       .catch(err => {

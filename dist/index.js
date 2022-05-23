@@ -89,7 +89,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
             }
         })
             .then(res => {
-            core.info(res.data);
+            core.info(JSON.stringify(res));
             // issues.push(res?.data)
         })
             .catch(err => {
