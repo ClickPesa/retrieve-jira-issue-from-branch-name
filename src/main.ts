@@ -52,7 +52,7 @@ const fetch_issue = async (keys: string[]) => {
         // issues.push(res?.data)
       })
       .catch((err: any) => {
-        core.info(err?.errorMessages)
+        core.info(err)
       })
   })
   // core.info(JSON.stringify(issues))
