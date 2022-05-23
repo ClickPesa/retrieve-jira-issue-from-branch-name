@@ -90,14 +90,13 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
         })
             .then((res) => {
             core.info('yay, output is there');
-            // core.info(JSON.stringify(res))
-            // issues.push(res?.data)
+            issues.push(res === null || res === void 0 ? void 0 : res.data);
         })
             .catch((err) => {
             core.info(err);
         });
     });
-    // core.info(JSON.stringify(issues))
+    core.info(JSON.stringify(issues));
 });
 run();
 

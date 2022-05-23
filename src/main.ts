@@ -48,14 +48,13 @@ const fetch_issue = async (keys: string[]) => {
       })
       .then((res: any) => {
         core.info('yay, output is there')
-        // core.info(JSON.stringify(res))
-        // issues.push(res?.data)
+        issues.push(res?.data)
       })
       .catch((err: any) => {
         core.info(err)
       })
   })
-  // core.info(JSON.stringify(issues))
+  core.info(JSON.stringify(issues))
 }
 
 run()
