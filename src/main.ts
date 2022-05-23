@@ -24,7 +24,6 @@ const run = async () => {
     }
   // run checks to update branch name
   try {
-    core.info(branch)
     fetch_issue(retrieve_issue_keys(branch))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
@@ -50,7 +49,7 @@ const fetch_issue = async (keys: string[]) => {
     core.info(issue)
     core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`)
     try {
-      const data: any = await axios.get(
+      const {data}: any = await axios.get(
         `https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`,
         {
           headers: {

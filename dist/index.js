@@ -67,7 +67,6 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         }
     // run checks to update branch name
     try {
-        core.info(branch);
         fetch_issue(retrieve_issue_keys(branch));
     }
     catch (error) {
@@ -93,7 +92,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
         core.info(issue);
         core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`);
         try {
-            const data = yield axios_1.default.get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
+            const { data } = yield axios_1.default.get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
