@@ -51,12 +51,15 @@ const fetch_issue = async (keys: string[]) => {
           Authorization: `Basic ${JIRA_AUTH_TOKEN}`
         }
       })
-      issues.push({
-        key: data?.key,
-        creatorEmail: data?.fields?.creator?.emailAddress,
-        creatorName: data?.fields?.creator?.displayName,
-        summary: data?.fields?.summary
-      })
+      issues = [
+        ...issues,
+        {
+          key: data?.key,
+          creatorEmail: data?.fields?.creator?.emailAddress,
+          creatorName: data?.fields?.creator?.displayName,
+          summary: data?.fields?.summary
+        }
+      ]
     } catch (err: any) {
       core.info(err.message)
     }

@@ -96,12 +96,15 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
             });
-            issues.push({
-                key: data === null || data === void 0 ? void 0 : data.key,
-                creatorEmail: (_c = (_b = data === null || data === void 0 ? void 0 : data.fields) === null || _b === void 0 ? void 0 : _b.creator) === null || _c === void 0 ? void 0 : _c.emailAddress,
-                creatorName: (_e = (_d = data === null || data === void 0 ? void 0 : data.fields) === null || _d === void 0 ? void 0 : _d.creator) === null || _e === void 0 ? void 0 : _e.displayName,
-                summary: (_f = data === null || data === void 0 ? void 0 : data.fields) === null || _f === void 0 ? void 0 : _f.summary
-            });
+            issues = [
+                ...issues,
+                {
+                    key: data === null || data === void 0 ? void 0 : data.key,
+                    creatorEmail: (_c = (_b = data === null || data === void 0 ? void 0 : data.fields) === null || _b === void 0 ? void 0 : _b.creator) === null || _c === void 0 ? void 0 : _c.emailAddress,
+                    creatorName: (_e = (_d = data === null || data === void 0 ? void 0 : data.fields) === null || _d === void 0 ? void 0 : _d.creator) === null || _e === void 0 ? void 0 : _e.displayName,
+                    summary: (_f = data === null || data === void 0 ? void 0 : data.fields) === null || _f === void 0 ? void 0 : _f.summary
+                }
+            ];
         }
         catch (err) {
             core.info(err.message);
