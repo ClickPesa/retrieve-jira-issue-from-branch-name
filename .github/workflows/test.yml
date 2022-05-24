@@ -23,7 +23,6 @@ jobs:
           JIRA_ISSUE_API_URL: ${{secrets.JIRA_ISSUE_API_URL}}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           JIRA_AUTH_TOKEN: ${{ secrets.JIRA_AUTH }}
-          FETCH_ON_MERGE_PR: false
       - name: Get jira issues
         run: |
           echo `raw output ${{ steps.retrieve_jira_issue.outputs.rawIssues }}`
