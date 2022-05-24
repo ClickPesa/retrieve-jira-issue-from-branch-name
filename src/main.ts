@@ -14,8 +14,9 @@ const {context = {}}: any = github
 const run = async () => {
   // default
   let branch: string = BRANCH_NAME
+  core.info(FETCH_ON_MERGE_PR)
   if (!BRANCH_NAME)
-    if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+    if (FETCH_ON_MERGE_PR) {
       // fetch on merge pr
       core.info('there')
       branch = ''

@@ -57,8 +57,9 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     // default
     let branch = BRANCH_NAME;
+    core.info(FETCH_ON_MERGE_PR);
     if (!BRANCH_NAME)
-        if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+        if (FETCH_ON_MERGE_PR) {
             // fetch on merge pr
             core.info('there');
             branch = '';
