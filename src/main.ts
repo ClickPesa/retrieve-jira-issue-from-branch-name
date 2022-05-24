@@ -44,8 +44,8 @@ const retrieve_issue_keys = branch => {
 
 const fetch_issue = async (keys: string[]) => {
   let issues: any = []
-  keys?.forEach(async (issue: any) => {
-    try {
+  try {
+    keys?.forEach(async (issue: any) => {
       const {data}: any = await axios.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
         headers: {
           Authorization: `Basic ${JIRA_AUTH_TOKEN}`
@@ -60,12 +60,11 @@ const fetch_issue = async (keys: string[]) => {
           summary: data?.fields?.summary
         }
       ]
-    } catch (err: any) {
-      core.info(err.message)
-    }
-  })
-  core.info(issues)
-  core.info(issues[0]?.creatorEmail)
+      core.info(issues)
+    })
+  } catch (err: any) {
+    core.info(err.message)
+  }
 }
 
 run()

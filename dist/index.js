@@ -86,11 +86,10 @@ const retrieve_issue_keys = branch => {
     return resultArr.join(',').toUpperCase().split(',');
 };
 const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     let issues = [];
-    keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
-        var _b, _c, _d, _e, _f;
-        try {
+    try {
+        keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e;
             const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
@@ -100,18 +99,17 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                 ...issues,
                 {
                     key: data === null || data === void 0 ? void 0 : data.key,
-                    creatorEmail: (_c = (_b = data === null || data === void 0 ? void 0 : data.fields) === null || _b === void 0 ? void 0 : _b.creator) === null || _c === void 0 ? void 0 : _c.emailAddress,
-                    creatorName: (_e = (_d = data === null || data === void 0 ? void 0 : data.fields) === null || _d === void 0 ? void 0 : _d.creator) === null || _e === void 0 ? void 0 : _e.displayName,
-                    summary: (_f = data === null || data === void 0 ? void 0 : data.fields) === null || _f === void 0 ? void 0 : _f.summary
+                    creatorEmail: (_b = (_a = data === null || data === void 0 ? void 0 : data.fields) === null || _a === void 0 ? void 0 : _a.creator) === null || _b === void 0 ? void 0 : _b.emailAddress,
+                    creatorName: (_d = (_c = data === null || data === void 0 ? void 0 : data.fields) === null || _c === void 0 ? void 0 : _c.creator) === null || _d === void 0 ? void 0 : _d.displayName,
+                    summary: (_e = data === null || data === void 0 ? void 0 : data.fields) === null || _e === void 0 ? void 0 : _e.summary
                 }
             ];
-        }
-        catch (err) {
-            core.info(err.message);
-        }
-    }));
-    core.info(issues);
-    core.info((_a = issues[0]) === null || _a === void 0 ? void 0 : _a.creatorEmail);
+            core.info(issues);
+        }));
+    }
+    catch (err) {
+        core.info(err.message);
+    }
 });
 run();
 
