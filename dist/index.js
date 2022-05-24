@@ -55,6 +55,7 @@ const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
+    console.log(context === null || context === void 0 ? void 0 : context.payload);
     // default
     let branch = BRANCH_NAME;
     core.info(FETCH_ON_MERGE_PR);
@@ -62,21 +63,18 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         // check event name
         if (FETCH_ON_MERGE_PR) {
             // fetch on merge pr
-            core.info('there');
             branch = '';
+            return;
         }
         else {
-            core.info('here');
             // fetch on push
             let ref = (_b = (_a = context === null || context === void 0 ? void 0 : context.payload) === null || _a === void 0 ? void 0 : _a.ref) === null || _b === void 0 ? void 0 : _b.split('/');
-            core.info(JSON.stringify(ref));
             branch = ref[ref.length - 1];
-            core.info(branch);
         }
     }
     // run checks to update branch name
     try {
-        // fetch_issue(retrieve_issue_keys(branch))
+        fetch_issue(retrieve_issue_keys(branch));
     }
     catch (error) {
         if (error instanceof Error)

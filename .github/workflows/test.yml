@@ -1,8 +1,7 @@
 name: 'build-test'
 on:
   push:
-    branches:
-      - '**'
+    branches: [main]
 
 jobs:
   build:
@@ -22,6 +21,7 @@ jobs:
         with:
           JIRA_ISSUE_API_URL: ${{secrets.JIRA_ISSUE_API_URL}}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          FETCH_ON_MERGE_PR: true
           JIRA_AUTH_TOKEN: ${{ secrets.JIRA_AUTH }}
       - name: Get jira issues
         run: |
