@@ -55,8 +55,6 @@ const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
-    core.info(context);
-    console.log(context);
     // default
     let branch = BRANCH_NAME;
     if (!BRANCH_NAME)
@@ -67,6 +65,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         else {
             // fetch on push
             let ref = (_b = (_a = context === null || context === void 0 ? void 0 : context.payload) === null || _a === void 0 ? void 0 : _a.ref) === null || _b === void 0 ? void 0 : _b.split('/');
+            core.info(JSON.stringify(ref));
             branch = ref[ref.length - 1];
             core.info(branch);
         }

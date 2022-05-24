@@ -12,9 +12,6 @@ const octokit = github.getOctokit(GITHUB_TOKEN)
 const {context = {}}: any = github
 
 const run = async () => {
-  core.info(context)
-  console.log(context)
-
   // default
   let branch: string = BRANCH_NAME
   if (!BRANCH_NAME)
@@ -24,6 +21,7 @@ const run = async () => {
     } else {
       // fetch on push
       let ref = context?.payload?.ref?.split('/')
+      core.info(JSON.stringify(ref))
       branch = ref[ref.length - 1]
       core.info(branch)
     }
