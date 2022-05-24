@@ -25,4 +25,4 @@ jobs:
           JIRA_AUTH_TOKEN: ${{ secrets.JIRA_AUTH }}
       - name: Get jira issues
         run: |
-          echo `raw output ${{ steps.retrieve_jira_issue.outputs.rawIssues }}`
+          echo `jira issues ${{ steps.retrieve_jira_issue.outputs.issues }}`

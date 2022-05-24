@@ -55,10 +55,8 @@ const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
-    console.log(context === null || context === void 0 ? void 0 : context.payload);
     // default
     let branch = BRANCH_NAME;
-    core.info(FETCH_ON_MERGE_PR);
     if (!BRANCH_NAME) {
         // check event name
         if (FETCH_ON_MERGE_PR) {
@@ -79,7 +77,6 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                     core.setFailed(error.message);
             }
             branch = (_l = pull === null || pull === void 0 ? void 0 : pull.head) === null || _l === void 0 ? void 0 : _l.ref;
-            core.info(branch);
         }
         else {
             // fetch on push
@@ -147,7 +144,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                     status: data === null || data === void 0 ? void 0 : data.fields.status.name
                 }
             ];
-            core.setOutput('rawIssues', issues);
+            core.setOutput('issues', issues);
         }));
     }
     catch (err) {

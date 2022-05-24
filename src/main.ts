@@ -12,10 +12,8 @@ const octokit = github.getOctokit(GITHUB_TOKEN)
 const {context = {}}: any = github
 
 const run = async () => {
-  console.log(context?.payload)
   // default
   let branch: string = BRANCH_NAME
-  core.info(FETCH_ON_MERGE_PR)
   if (!BRANCH_NAME) {
     // check event name
     if (FETCH_ON_MERGE_PR) {
@@ -37,7 +35,6 @@ const run = async () => {
         if (error instanceof Error) core.setFailed(error.message)
       }
       branch = pull?.head?.ref
-      core.info(branch)
     } else {
       // fetch on push
       let ref = context?.payload?.ref?.split('/')
@@ -103,7 +100,7 @@ const fetch_issue = async (keys: string[]) => {
           status: data?.fields.status.name
         }
       ]
-      core.setOutput('rawIssues', issues)
+      core.setOutput('issues', issues)
     })
   } catch (err: any) {
     core.info(err.message)
