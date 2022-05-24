@@ -89,22 +89,18 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     let issues = [];
     keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
-        var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        var _b, _c, _d, _e, _f;
         try {
             const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
             });
-            core.info(data === null || data === void 0 ? void 0 : data.key);
-            core.info((_b = data === null || data === void 0 ? void 0 : data.fields) === null || _b === void 0 ? void 0 : _b.summary);
-            core.info((_d = (_c = data === null || data === void 0 ? void 0 : data.fields) === null || _c === void 0 ? void 0 : _c.creator) === null || _d === void 0 ? void 0 : _d.emailAddress);
-            core.info((_f = (_e = data === null || data === void 0 ? void 0 : data.fields) === null || _e === void 0 ? void 0 : _e.creator) === null || _f === void 0 ? void 0 : _f.displayName);
             issues.push({
                 key: data === null || data === void 0 ? void 0 : data.key,
-                creatorEmail: (_h = (_g = data === null || data === void 0 ? void 0 : data.fields) === null || _g === void 0 ? void 0 : _g.creator) === null || _h === void 0 ? void 0 : _h.emailAddress,
-                creatorName: (_k = (_j = data === null || data === void 0 ? void 0 : data.fields) === null || _j === void 0 ? void 0 : _j.creator) === null || _k === void 0 ? void 0 : _k.displayName,
-                summary: (_l = data === null || data === void 0 ? void 0 : data.fields) === null || _l === void 0 ? void 0 : _l.summary
+                creatorEmail: (_c = (_b = data === null || data === void 0 ? void 0 : data.fields) === null || _b === void 0 ? void 0 : _b.creator) === null || _c === void 0 ? void 0 : _c.emailAddress,
+                creatorName: (_e = (_d = data === null || data === void 0 ? void 0 : data.fields) === null || _d === void 0 ? void 0 : _d.creator) === null || _e === void 0 ? void 0 : _e.displayName,
+                summary: (_f = data === null || data === void 0 ? void 0 : data.fields) === null || _f === void 0 ? void 0 : _f.summary
             });
         }
         catch (err) {

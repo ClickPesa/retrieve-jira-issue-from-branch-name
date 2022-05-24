@@ -51,10 +51,6 @@ const fetch_issue = async (keys: string[]) => {
           Authorization: `Basic ${JIRA_AUTH_TOKEN}`
         }
       })
-      core.info(data?.key)
-      core.info(data?.fields?.summary)
-      core.info(data?.fields?.creator?.emailAddress)
-      core.info(data?.fields?.creator?.displayName)
       issues.push({
         key: data?.key,
         creatorEmail: data?.fields?.creator?.emailAddress,
