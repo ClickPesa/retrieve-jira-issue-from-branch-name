@@ -60,7 +60,8 @@ const fetch_issue = async (keys: string[]) => {
           summary: data?.fields?.summary
         }
       ]
-      core.info(issues)
+      core.info(issues[0]?.creatorEmail)
+      core.info(JSON.stringify(issues))
     })
   } catch (err: any) {
     core.info(err.message)
