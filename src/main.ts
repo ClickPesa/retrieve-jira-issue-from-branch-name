@@ -23,7 +23,9 @@ const run = async () => {
       branch = ''
     } else {
       // fetch on push
-      branch = ''
+      let ref = context?.payload?.ref?.split('/')
+      branch = ref[ref.length - 1]
+      core.info(branch)
     }
   // run checks to update branch name
   try {
