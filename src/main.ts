@@ -34,8 +34,8 @@ const retrieve_issue_keys = branch => {
   const resultArr = []
   const regex = /((([a-zA-Z]+)|([0-9]+))+-\d+)/g
   const matches = matchAll(branch, regex).toArray()
-  matches.forEach(match => {
-    if (!resultArr.find(el => el === match)) {
+  matches.forEach((match: any) => {
+    if (!resultArr.find((el: any) => el === match)) {
       resultArr.push(match)
     }
   })
@@ -63,5 +63,3 @@ const fetch_issue = async (keys: string[]) => {
 }
 
 run()
-
-// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'

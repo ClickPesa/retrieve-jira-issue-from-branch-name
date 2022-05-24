@@ -78,8 +78,8 @@ const retrieve_issue_keys = branch => {
     const resultArr = [];
     const regex = /((([a-zA-Z]+)|([0-9]+))+-\d+)/g;
     const matches = (0, match_all_1.default)(branch, regex).toArray();
-    matches.forEach(match => {
-        if (!resultArr.find(el => el === match)) {
+    matches.forEach((match) => {
+        if (!resultArr.find((el) => el === match)) {
             resultArr.push(match);
         }
     });
@@ -106,7 +106,6 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     // core.info(JSON.stringify(issues))
 });
 run();
-// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'
 
 
 /***/ }),
