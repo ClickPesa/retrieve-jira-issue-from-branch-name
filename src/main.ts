@@ -55,13 +55,36 @@ const fetch_issue = async (keys: string[]) => {
         ...issues,
         {
           key: data?.key,
-          creatorEmail: data?.fields?.creator?.emailAddress,
-          creatorName: data?.fields?.creator?.displayName,
-          summary: data?.fields?.summary
+          creator: {
+            email: data?.fields?.creator?.emailAddress,
+            name: data?.fields?.creator?.displayName
+          },
+          reporter: {
+            email: data?.fields?.reporter?.emailAddress,
+            name: data?.fields?.reporter?.displayName
+          },
+          summary: data?.fields?.summary,
+          issueType: data?.fields.issuetype?.name,
+          project: {
+            name: data.fields.project.name,
+            key: data.fields.project.key
+          },
+          parent: {
+            key: data?.key,
+            summary: data?.fields?.parent.fields.summary,
+            issueType: data?.fields.parent.fields.issuetype?.name
+          },
+          assignee: {
+            email: data?.fields?.assignee?.emailAddress,
+            name: data?.fields?.assignee?.displayName
+          },
+          status: data?.fields.status.name
         }
       ]
-      core.info(issues[0]?.creatorEmail)
+      core.info(issues)
       core.info(JSON.stringify(issues))
+      core.setOutput('rawIssues', issues)
+      core.setOutput('stringfiedIssues', JSON.stringify(issues))
     })
   } catch (err: any) {
     core.info(err.message)

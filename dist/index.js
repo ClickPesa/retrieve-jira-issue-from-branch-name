@@ -89,7 +89,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
     try {
         keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
-            var _a, _b, _c, _d, _e, _f;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
             const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
@@ -99,13 +99,36 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                 ...issues,
                 {
                     key: data === null || data === void 0 ? void 0 : data.key,
-                    creatorEmail: (_b = (_a = data === null || data === void 0 ? void 0 : data.fields) === null || _a === void 0 ? void 0 : _a.creator) === null || _b === void 0 ? void 0 : _b.emailAddress,
-                    creatorName: (_d = (_c = data === null || data === void 0 ? void 0 : data.fields) === null || _c === void 0 ? void 0 : _c.creator) === null || _d === void 0 ? void 0 : _d.displayName,
-                    summary: (_e = data === null || data === void 0 ? void 0 : data.fields) === null || _e === void 0 ? void 0 : _e.summary
+                    creator: {
+                        email: (_b = (_a = data === null || data === void 0 ? void 0 : data.fields) === null || _a === void 0 ? void 0 : _a.creator) === null || _b === void 0 ? void 0 : _b.emailAddress,
+                        name: (_d = (_c = data === null || data === void 0 ? void 0 : data.fields) === null || _c === void 0 ? void 0 : _c.creator) === null || _d === void 0 ? void 0 : _d.displayName
+                    },
+                    reporter: {
+                        email: (_f = (_e = data === null || data === void 0 ? void 0 : data.fields) === null || _e === void 0 ? void 0 : _e.reporter) === null || _f === void 0 ? void 0 : _f.emailAddress,
+                        name: (_h = (_g = data === null || data === void 0 ? void 0 : data.fields) === null || _g === void 0 ? void 0 : _g.reporter) === null || _h === void 0 ? void 0 : _h.displayName
+                    },
+                    summary: (_j = data === null || data === void 0 ? void 0 : data.fields) === null || _j === void 0 ? void 0 : _j.summary,
+                    issueType: (_k = data === null || data === void 0 ? void 0 : data.fields.issuetype) === null || _k === void 0 ? void 0 : _k.name,
+                    project: {
+                        name: data.fields.project.name,
+                        key: data.fields.project.key
+                    },
+                    parent: {
+                        key: data === null || data === void 0 ? void 0 : data.key,
+                        summary: (_l = data === null || data === void 0 ? void 0 : data.fields) === null || _l === void 0 ? void 0 : _l.parent.fields.summary,
+                        issueType: (_m = data === null || data === void 0 ? void 0 : data.fields.parent.fields.issuetype) === null || _m === void 0 ? void 0 : _m.name
+                    },
+                    assignee: {
+                        email: (_p = (_o = data === null || data === void 0 ? void 0 : data.fields) === null || _o === void 0 ? void 0 : _o.assignee) === null || _p === void 0 ? void 0 : _p.emailAddress,
+                        name: (_r = (_q = data === null || data === void 0 ? void 0 : data.fields) === null || _q === void 0 ? void 0 : _q.assignee) === null || _r === void 0 ? void 0 : _r.displayName
+                    },
+                    status: data === null || data === void 0 ? void 0 : data.fields.status.name
                 }
             ];
-            core.info((_f = issues[0]) === null || _f === void 0 ? void 0 : _f.creatorEmail);
+            core.info(issues);
             core.info(JSON.stringify(issues));
+            core.setOutput('rawIssues', issues);
+            core.setOutput('stringfiedIssues', JSON.stringify(issues));
         }));
     }
     catch (err) {
