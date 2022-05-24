@@ -17,8 +17,10 @@ const run = async () => {
   if (!BRANCH_NAME)
     if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
       // fetch on merge pr
+      core.info('there')
       branch = ''
     } else {
+      core.info('here')
       // fetch on push
       let ref = context?.payload?.ref?.split('/')
       core.info(JSON.stringify(ref))
@@ -27,7 +29,7 @@ const run = async () => {
     }
   // run checks to update branch name
   try {
-    fetch_issue(retrieve_issue_keys(branch))
+    // fetch_issue(retrieve_issue_keys(branch))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

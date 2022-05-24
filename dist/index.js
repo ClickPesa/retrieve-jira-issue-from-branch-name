@@ -60,9 +60,11 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!BRANCH_NAME)
         if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
             // fetch on merge pr
+            core.info('there');
             branch = '';
         }
         else {
+            core.info('here');
             // fetch on push
             let ref = (_b = (_a = context === null || context === void 0 ? void 0 : context.payload) === null || _a === void 0 ? void 0 : _a.ref) === null || _b === void 0 ? void 0 : _b.split('/');
             core.info(JSON.stringify(ref));
@@ -71,7 +73,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         }
     // run checks to update branch name
     try {
-        fetch_issue(retrieve_issue_keys(branch));
+        // fetch_issue(retrieve_issue_keys(branch))
     }
     catch (error) {
         if (error instanceof Error)
