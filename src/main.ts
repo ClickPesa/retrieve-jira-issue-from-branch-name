@@ -19,9 +19,25 @@ const run = async () => {
   if (!BRANCH_NAME) {
     // check event name
     if (FETCH_ON_MERGE_PR) {
+      let pull = null
       // fetch on merge pr
-      branch = ''
-      return
+      let pull_number: any = context.payload?.head_commit?.message
+        ?.split(' ')
+        ?.find(o => o?.includes('#'))
+        ?.split('#')[1]
+      try {
+        const latestPull = await octokit.rest.pulls.get({
+          owner: context.payload?.repository?.owner?.login,
+          repo: context.payload?.repository?.name,
+          pull_number
+        })
+        // fetch pull request
+        pull = latestPull?.data
+      } catch (error: any) {
+        if (error instanceof Error) core.setFailed(error.message)
+      }
+      branch = pull?.head?.ref
+      core.info(branch)
     } else {
       // fetch on push
       let ref = context?.payload?.ref?.split('/')

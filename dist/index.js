@@ -54,7 +54,7 @@ const JIRA_AUTH_TOKEN = core.getInput('JIRA_AUTH_TOKEN');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     console.log(context === null || context === void 0 ? void 0 : context.payload);
     // default
     let branch = BRANCH_NAME;
@@ -62,13 +62,28 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!BRANCH_NAME) {
         // check event name
         if (FETCH_ON_MERGE_PR) {
+            let pull = null;
             // fetch on merge pr
-            branch = '';
-            return;
+            let pull_number = (_e = (_d = (_c = (_b = (_a = context.payload) === null || _a === void 0 ? void 0 : _a.head_commit) === null || _b === void 0 ? void 0 : _b.message) === null || _c === void 0 ? void 0 : _c.split(' ')) === null || _d === void 0 ? void 0 : _d.find(o => o === null || o === void 0 ? void 0 : o.includes('#'))) === null || _e === void 0 ? void 0 : _e.split('#')[1];
+            try {
+                const latestPull = yield octokit.rest.pulls.get({
+                    owner: (_h = (_g = (_f = context.payload) === null || _f === void 0 ? void 0 : _f.repository) === null || _g === void 0 ? void 0 : _g.owner) === null || _h === void 0 ? void 0 : _h.login,
+                    repo: (_k = (_j = context.payload) === null || _j === void 0 ? void 0 : _j.repository) === null || _k === void 0 ? void 0 : _k.name,
+                    pull_number
+                });
+                // fetch pull request
+                pull = latestPull === null || latestPull === void 0 ? void 0 : latestPull.data;
+            }
+            catch (error) {
+                if (error instanceof Error)
+                    core.setFailed(error.message);
+            }
+            branch = (_l = pull === null || pull === void 0 ? void 0 : pull.head) === null || _l === void 0 ? void 0 : _l.ref;
+            core.info(branch);
         }
         else {
             // fetch on push
-            let ref = (_b = (_a = context === null || context === void 0 ? void 0 : context.payload) === null || _a === void 0 ? void 0 : _a.ref) === null || _b === void 0 ? void 0 : _b.split('/');
+            let ref = (_o = (_m = context === null || context === void 0 ? void 0 : context.payload) === null || _m === void 0 ? void 0 : _m.ref) === null || _o === void 0 ? void 0 : _o.split('/');
             branch = ref[ref.length - 1];
         }
     }
@@ -96,7 +111,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
     try {
         keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
-            var _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+            var _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4;
             const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
@@ -107,27 +122,27 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                 {
                     key: data === null || data === void 0 ? void 0 : data.key,
                     creator: {
-                        email: (_d = (_c = data === null || data === void 0 ? void 0 : data.fields) === null || _c === void 0 ? void 0 : _c.creator) === null || _d === void 0 ? void 0 : _d.emailAddress,
-                        name: (_f = (_e = data === null || data === void 0 ? void 0 : data.fields) === null || _e === void 0 ? void 0 : _e.creator) === null || _f === void 0 ? void 0 : _f.displayName
+                        email: (_q = (_p = data === null || data === void 0 ? void 0 : data.fields) === null || _p === void 0 ? void 0 : _p.creator) === null || _q === void 0 ? void 0 : _q.emailAddress,
+                        name: (_s = (_r = data === null || data === void 0 ? void 0 : data.fields) === null || _r === void 0 ? void 0 : _r.creator) === null || _s === void 0 ? void 0 : _s.displayName
                     },
                     reporter: {
-                        email: (_h = (_g = data === null || data === void 0 ? void 0 : data.fields) === null || _g === void 0 ? void 0 : _g.reporter) === null || _h === void 0 ? void 0 : _h.emailAddress,
-                        name: (_k = (_j = data === null || data === void 0 ? void 0 : data.fields) === null || _j === void 0 ? void 0 : _j.reporter) === null || _k === void 0 ? void 0 : _k.displayName
+                        email: (_u = (_t = data === null || data === void 0 ? void 0 : data.fields) === null || _t === void 0 ? void 0 : _t.reporter) === null || _u === void 0 ? void 0 : _u.emailAddress,
+                        name: (_w = (_v = data === null || data === void 0 ? void 0 : data.fields) === null || _v === void 0 ? void 0 : _v.reporter) === null || _w === void 0 ? void 0 : _w.displayName
                     },
-                    summary: (_l = data === null || data === void 0 ? void 0 : data.fields) === null || _l === void 0 ? void 0 : _l.summary,
-                    issueType: (_m = data === null || data === void 0 ? void 0 : data.fields.issuetype) === null || _m === void 0 ? void 0 : _m.name,
+                    summary: (_x = data === null || data === void 0 ? void 0 : data.fields) === null || _x === void 0 ? void 0 : _x.summary,
+                    issueType: (_y = data === null || data === void 0 ? void 0 : data.fields.issuetype) === null || _y === void 0 ? void 0 : _y.name,
                     project: {
                         name: data.fields.project.name,
                         key: data.fields.project.key
                     },
                     parent: {
                         key: data === null || data === void 0 ? void 0 : data.key,
-                        summary: (_o = data === null || data === void 0 ? void 0 : data.fields) === null || _o === void 0 ? void 0 : _o.parent.fields.summary,
-                        issueType: (_p = data === null || data === void 0 ? void 0 : data.fields.parent.fields.issuetype) === null || _p === void 0 ? void 0 : _p.name
+                        summary: (_z = data === null || data === void 0 ? void 0 : data.fields) === null || _z === void 0 ? void 0 : _z.parent.fields.summary,
+                        issueType: (_0 = data === null || data === void 0 ? void 0 : data.fields.parent.fields.issuetype) === null || _0 === void 0 ? void 0 : _0.name
                     },
                     assignee: {
-                        email: (_r = (_q = data === null || data === void 0 ? void 0 : data.fields) === null || _q === void 0 ? void 0 : _q.assignee) === null || _r === void 0 ? void 0 : _r.emailAddress,
-                        name: (_t = (_s = data === null || data === void 0 ? void 0 : data.fields) === null || _s === void 0 ? void 0 : _s.assignee) === null || _t === void 0 ? void 0 : _t.displayName
+                        email: (_2 = (_1 = data === null || data === void 0 ? void 0 : data.fields) === null || _1 === void 0 ? void 0 : _1.assignee) === null || _2 === void 0 ? void 0 : _2.emailAddress,
+                        name: (_4 = (_3 = data === null || data === void 0 ? void 0 : data.fields) === null || _3 === void 0 ? void 0 : _3.assignee) === null || _4 === void 0 ? void 0 : _4.displayName
                     },
                     status: data === null || data === void 0 ? void 0 : data.fields.status.name
                 }
