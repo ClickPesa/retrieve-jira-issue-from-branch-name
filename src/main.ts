@@ -46,12 +46,14 @@ const fetch_issue = async (keys: string[]) => {
   let issues: any = []
   keys?.forEach(async (issue: any) => {
     try {
-      const {data}: any = await axios.get(`${JIRA_ISSUE_API_URL}${issue}`, {
+      const data: any = await axios.get(`${JIRA_ISSUE_API_URL}${issue}`, {
         headers: {
           Authorization: `Basic ${JIRA_AUTH_TOKEN}`
         }
       })
-      core.info(data)
+      core.info(data.json())
+      console.log(JSON.stringify(data, null, 2))
+      // core.info(data?.id)
     } catch (err: any) {
       core.info(err.message)
     }
