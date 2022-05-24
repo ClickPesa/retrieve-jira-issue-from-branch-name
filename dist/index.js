@@ -58,7 +58,8 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     // default
     let branch = BRANCH_NAME;
     core.info(FETCH_ON_MERGE_PR);
-    if (!BRANCH_NAME)
+    if (!BRANCH_NAME) {
+        // check event name
         if (FETCH_ON_MERGE_PR) {
             // fetch on merge pr
             core.info('there');
@@ -72,6 +73,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             branch = ref[ref.length - 1];
             core.info(branch);
         }
+    }
     // run checks to update branch name
     try {
         // fetch_issue(retrieve_issue_keys(branch))
