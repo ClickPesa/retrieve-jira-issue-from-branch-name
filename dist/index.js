@@ -94,7 +94,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
             });
-            core.info(data.json());
+            core.info(data);
             console.log(JSON.stringify(data, null, 2));
             // core.info(data?.id)
         }
