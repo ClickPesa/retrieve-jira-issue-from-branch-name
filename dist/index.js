@@ -54,6 +54,8 @@ const JIRA_AUTH_TOKEN = core.getInput('JIRA_AUTH_TOKEN');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    core.info(context);
+    console.log(context);
     // default
     let branch = BRANCH_NAME;
     if (!BRANCH_NAME)
@@ -125,10 +127,7 @@ const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
                     status: data === null || data === void 0 ? void 0 : data.fields.status.name
                 }
             ];
-            core.info(issues);
-            core.info(JSON.stringify(issues));
             core.setOutput('rawIssues', issues);
-            core.setOutput('stringfiedIssues', JSON.stringify(issues));
         }));
     }
     catch (err) {

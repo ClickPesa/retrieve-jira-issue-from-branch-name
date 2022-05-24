@@ -28,4 +28,3 @@ jobs:
       - name: Get jira issues
         run: |
           echo "raw output ${{ steps.retrieve_jira_issue.outputs.rawIssues }}"
-          echo "Stringfied output ${{ steps.retrieve_jira_issue.outputs.stringfiedIssues }}"

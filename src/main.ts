@@ -12,6 +12,9 @@ const octokit = github.getOctokit(GITHUB_TOKEN)
 const {context = {}}: any = github
 
 const run = async () => {
+  core.info(context)
+  console.log(context)
+
   // default
   let branch: string = BRANCH_NAME
   if (!BRANCH_NAME)
@@ -81,10 +84,7 @@ const fetch_issue = async (keys: string[]) => {
           status: data?.fields.status.name
         }
       ]
-      core.info(issues)
-      core.info(JSON.stringify(issues))
       core.setOutput('rawIssues', issues)
-      core.setOutput('stringfiedIssues', JSON.stringify(issues))
     })
   } catch (err: any) {
     core.info(err.message)
