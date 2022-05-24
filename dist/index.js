@@ -88,14 +88,18 @@ const retrieve_issue_keys = branch => {
 const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
     keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c, _d, _e;
         try {
-            const data = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
+            const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
             });
             core.info(data);
-            console.log(JSON.stringify(data, null, 2));
+            core.info(data === null || data === void 0 ? void 0 : data.key);
+            core.info((_a = data === null || data === void 0 ? void 0 : data.fields) === null || _a === void 0 ? void 0 : _a.summary);
+            core.info((_c = (_b = data === null || data === void 0 ? void 0 : data.fields) === null || _b === void 0 ? void 0 : _b.creator) === null || _c === void 0 ? void 0 : _c.emailAddress);
+            core.info((_e = (_d = data === null || data === void 0 ? void 0 : data.fields) === null || _d === void 0 ? void 0 : _d.creator) === null || _e === void 0 ? void 0 : _e.displayName);
             // core.info(data?.id)
         }
         catch (err) {
