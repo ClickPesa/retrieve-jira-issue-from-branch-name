@@ -12,19 +12,24 @@ const octokit = github.getOctokit(GITHUB_TOKEN)
 const {context = {}}: any = github
 
 const run = async () => {
+  console.log(context?.payload)
   // default
   let branch: string = BRANCH_NAME
-  if (!BRANCH_NAME)
-    if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+  core.info(FETCH_ON_MERGE_PR)
+  if (!BRANCH_NAME) {
+    // check event name
+    if (FETCH_ON_MERGE_PR) {
       // fetch on merge pr
       branch = ''
+      return
     } else {
       // fetch on push
-      branch = ''
+      let ref = context?.payload?.ref?.split('/')
+      branch = ref[ref.length - 1]
     }
+  }
   // run checks to update branch name
   try {
-    core.info(branch)
     fetch_issue(retrieve_issue_keys(branch))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
@@ -35,8 +40,8 @@ const retrieve_issue_keys = branch => {
   const resultArr = []
   const regex = /((([a-zA-Z]+)|([0-9]+))+-\d+)/g
   const matches = matchAll(branch, regex).toArray()
-  matches.forEach(match => {
-    if (!resultArr.find(el => el === match)) {
+  matches.forEach((match: any) => {
+    if (!resultArr.find((el: any) => el === match)) {
       resultArr.push(match)
     }
   })
@@ -45,28 +50,48 @@ const retrieve_issue_keys = branch => {
 
 const fetch_issue = async (keys: string[]) => {
   let issues: any = []
-  core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`)
-  keys?.forEach(async (issue: any) => {
-    core.info(issue)
-    core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`)
-    try {
-      const data: any = await axios.get(
-        `https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`,
-        {
-          headers: {
-            Authorization: `Basic ${JIRA_AUTH_TOKEN}`
-          }
+  try {
+    keys?.forEach(async (issue: any) => {
+      const {data}: any = await axios.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
+        headers: {
+          Authorization: `Basic ${JIRA_AUTH_TOKEN}`
         }
-      )
-      core.info(data)
-    } catch (err: any) {
-      core.info(err.message)
-    }
-  })
-  // core.info(issues)
-  // core.info(JSON.stringify(issues))
+      })
+      issues = [
+        ...issues,
+        {
+          key: data?.key,
+          creator: {
+            email: data?.fields?.creator?.emailAddress,
+            name: data?.fields?.creator?.displayName
+          },
+          reporter: {
+            email: data?.fields?.reporter?.emailAddress,
+            name: data?.fields?.reporter?.displayName
+          },
+          summary: data?.fields?.summary,
+          issueType: data?.fields.issuetype?.name,
+          project: {
+            name: data.fields.project.name,
+            key: data.fields.project.key
+          },
+          parent: {
+            key: data?.key,
+            summary: data?.fields?.parent.fields.summary,
+            issueType: data?.fields.parent.fields.issuetype?.name
+          },
+          assignee: {
+            email: data?.fields?.assignee?.emailAddress,
+            name: data?.fields?.assignee?.displayName
+          },
+          status: data?.fields.status.name
+        }
+      ]
+      core.setOutput('rawIssues', issues)
+    })
+  } catch (err: any) {
+    core.info(err.message)
+  }
 }
 
 run()
-
-// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'

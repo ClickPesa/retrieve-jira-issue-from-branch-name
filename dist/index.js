@@ -54,20 +54,26 @@ const JIRA_AUTH_TOKEN = core.getInput('JIRA_AUTH_TOKEN');
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { context = {} } = github;
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    console.log(context === null || context === void 0 ? void 0 : context.payload);
     // default
     let branch = BRANCH_NAME;
-    if (!BRANCH_NAME)
-        if (FETCH_ON_MERGE_PR && !BRANCH_NAME) {
+    core.info(FETCH_ON_MERGE_PR);
+    if (!BRANCH_NAME) {
+        // check event name
+        if (FETCH_ON_MERGE_PR) {
             // fetch on merge pr
             branch = '';
+            return;
         }
         else {
             // fetch on push
-            branch = '';
+            let ref = (_b = (_a = context === null || context === void 0 ? void 0 : context.payload) === null || _a === void 0 ? void 0 : _a.ref) === null || _b === void 0 ? void 0 : _b.split('/');
+            branch = ref[ref.length - 1];
         }
+    }
     // run checks to update branch name
     try {
-        core.info(branch);
         fetch_issue(retrieve_issue_keys(branch));
     }
     catch (error) {
@@ -79,8 +85,8 @@ const retrieve_issue_keys = branch => {
     const resultArr = [];
     const regex = /((([a-zA-Z]+)|([0-9]+))+-\d+)/g;
     const matches = (0, match_all_1.default)(branch, regex).toArray();
-    matches.forEach(match => {
-        if (!resultArr.find(el => el === match)) {
+    matches.forEach((match) => {
+        if (!resultArr.find((el) => el === match)) {
             resultArr.push(match);
         }
     });
@@ -88,27 +94,52 @@ const retrieve_issue_keys = branch => {
 };
 const fetch_issue = (keys) => __awaiter(void 0, void 0, void 0, function* () {
     let issues = [];
-    core.info(`test https://clickpesa.atlassian.net/rest/api/3/issue/`);
-    keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
-        core.info(issue);
-        core.info(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`);
-        try {
-            const data = yield axios_1.default.get(`https://clickpesa.atlassian.net/rest/api/3/issue/${issue}`, {
+    try {
+        keys === null || keys === void 0 ? void 0 : keys.forEach((issue) => __awaiter(void 0, void 0, void 0, function* () {
+            var _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+            const { data } = yield axios_1.default.get(`${JIRA_ISSUE_API_URL}/${issue}`, {
                 headers: {
                     Authorization: `Basic ${JIRA_AUTH_TOKEN}`
                 }
             });
-            core.info(data);
-        }
-        catch (err) {
-            core.info(err.message);
-        }
-    }));
-    // core.info(issues)
-    // core.info(JSON.stringify(issues))
+            issues = [
+                ...issues,
+                {
+                    key: data === null || data === void 0 ? void 0 : data.key,
+                    creator: {
+                        email: (_d = (_c = data === null || data === void 0 ? void 0 : data.fields) === null || _c === void 0 ? void 0 : _c.creator) === null || _d === void 0 ? void 0 : _d.emailAddress,
+                        name: (_f = (_e = data === null || data === void 0 ? void 0 : data.fields) === null || _e === void 0 ? void 0 : _e.creator) === null || _f === void 0 ? void 0 : _f.displayName
+                    },
+                    reporter: {
+                        email: (_h = (_g = data === null || data === void 0 ? void 0 : data.fields) === null || _g === void 0 ? void 0 : _g.reporter) === null || _h === void 0 ? void 0 : _h.emailAddress,
+                        name: (_k = (_j = data === null || data === void 0 ? void 0 : data.fields) === null || _j === void 0 ? void 0 : _j.reporter) === null || _k === void 0 ? void 0 : _k.displayName
+                    },
+                    summary: (_l = data === null || data === void 0 ? void 0 : data.fields) === null || _l === void 0 ? void 0 : _l.summary,
+                    issueType: (_m = data === null || data === void 0 ? void 0 : data.fields.issuetype) === null || _m === void 0 ? void 0 : _m.name,
+                    project: {
+                        name: data.fields.project.name,
+                        key: data.fields.project.key
+                    },
+                    parent: {
+                        key: data === null || data === void 0 ? void 0 : data.key,
+                        summary: (_o = data === null || data === void 0 ? void 0 : data.fields) === null || _o === void 0 ? void 0 : _o.parent.fields.summary,
+                        issueType: (_p = data === null || data === void 0 ? void 0 : data.fields.parent.fields.issuetype) === null || _p === void 0 ? void 0 : _p.name
+                    },
+                    assignee: {
+                        email: (_r = (_q = data === null || data === void 0 ? void 0 : data.fields) === null || _q === void 0 ? void 0 : _q.assignee) === null || _r === void 0 ? void 0 : _r.emailAddress,
+                        name: (_t = (_s = data === null || data === void 0 ? void 0 : data.fields) === null || _s === void 0 ? void 0 : _s.assignee) === null || _t === void 0 ? void 0 : _t.displayName
+                    },
+                    status: data === null || data === void 0 ? void 0 : data.fields.status.name
+                }
+            ];
+            core.setOutput('rawIssues', issues);
+        }));
+    }
+    catch (err) {
+        core.info(err.message);
+    }
 });
 run();
-// curl --request GET   --url 'https://clickpesa.atlassian.net/rest/api/3/issue/TO-169' --header 'Authorization: Basic Zy5idW5kYWxhQGNsaWNrcGVzYS5jb206aTI2WnB1NU5WTFlqUHE3RDlqVGwxNzA0'
 
 
 /***/ }),
